@@ -1,6 +1,5 @@
 # limit use Julia and R in the same notebook
 rm(list=ls(all=TRUE))
-setwd('/Users/zagidull/Documents/fimm_files/survival_all/survival_loukavaara/data')
 
 library(pacman)
 pacman::p_load(tidyverse, survival, iai)
