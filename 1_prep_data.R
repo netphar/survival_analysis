@@ -1,4 +1,3 @@
-setwd('/Users/zagidull/Documents/fimm_files/survival_all/survival_loukavaara/data')
 library(tidyverse)
 library(mice)
 library(ranger)
