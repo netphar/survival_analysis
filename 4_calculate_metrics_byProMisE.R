@@ -1,5 +1,4 @@
 rm(list=ls(all=TRUE))
-setwd('/Users/zagidull/Documents/fimm_files/survival_all/survival_loukavaara/data')
 
 set.seed(2111410)
 options(scipen=999)
