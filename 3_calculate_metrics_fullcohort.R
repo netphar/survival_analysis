@@ -74,7 +74,7 @@ get_metrics_flexi <- function(df, formula, mat_tree=NULL){
     return(c(cind,ibs_12,ibs_36,ibs_60,ibs_all))
 }
 
-bootstrap_metrics <- function(df_vars, formula, mat_tree=NULL, bs_iter=10){
+bootstrap_metrics <- function(df_vars, formula, mat_tree=NULL, bs_iter=120){
     holder <- list()
     for(i in c(1:bs_iter)){
         index_boot <- sample(1:nrow(df_vars), size = nrow(df_vars), replace = TRUE) # get resampled index
