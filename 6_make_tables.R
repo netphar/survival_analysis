@@ -1,5 +1,3 @@
-setwd('/Users/zagidull/Documents/fimm_files/survival_all/survival_loukavaara/data')
-
 library(pacman)
 pacman::p_load(tidyverse, broom, tableone, survival)
 
