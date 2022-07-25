@@ -65,7 +65,7 @@ get_metrics_flexi <- function(df, formula, mat_tree=NULL){
     return(c(cind,ibs_12,ibs_36,ibs_60,ibs_all))
 }
 
-bootstrap_metrics <- function(df_vars, formula, mat_tree=NULL, bs_iter=10){
+bootstrap_metrics <- function(df_vars, formula, mat_tree=NULL, bs_iter=120){
     holder <- list()
     for(i in c(1:bs_iter)){
         index_boot <- sample(1:nrow(df_vars), size = nrow(df_vars), replace = TRUE) # get resampled index
@@ -93,9 +93,9 @@ get_ci <- function(df_bs){
 }
 
 #####
-# Prepare objects to calculate and store bootstrapped metrics (IBS at 1y-3y-5y-all and Harrell's cindex)
+# Prepare objects to calculate and store bootstrapped metrics (IBS at 1y-2y-5y-all and Harrell's cindex)
 holder = list()
-num_iter <- 100 # num bootstrap iterations
+num_iter <- 120 # num bootstrap iterations
 fx_trad <-Surv(time, death) ~ age+stage+histological_subgroup+deep_myometrial_invasion+lymphovascular_invasion+diameter_more_3cm # trad variable set
 fx_ext <-Surv(time, death) ~ age+stage+histological_subgroup+deep_myometrial_invasion+lymphovascular_invasion+diameter_more_3cm+diameter_more_5cm+cytology+ER+CD171 # extended variable set
 
