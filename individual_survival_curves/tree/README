@@ -1,1 +1,2 @@
 
+when OST models are trained we try to make trees as shallow as possible with larger leaves by a) limiting depth, b) setting ls_num_tree_restarts high (1000-2500) (ref: https://docs.interpretable.ai/stable/OptimalTrees/learner/#ls_num_tree_restarts) and c) increasing minbucket/death_minbucket. This harms models' performance somewhat, but it is ok since gain in interpretability and stability is worth.
