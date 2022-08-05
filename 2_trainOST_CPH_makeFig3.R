@@ -51,6 +51,16 @@ get_ci <- function(df_bs){
     out <- rbind(upper=cis[2,], means, lower=cis[1,])
     return(round(out, digits = 4))
 } 
+get_cox_survprob <- function(df_input, fx){
+    times <- sort(unique(df_input$time))
+    vars <- all.vars(fx)
+    surv_obj <- Surv(df_input$time, df_input$death)
+    cox <- coxph(fx, data = df_input[, vars], x = T, y = T)
+    mat_cox <- predictSurvProb(cox, df_input[, vars], times)
+    mat_cox
+}
+    
+    
 get_metrics_cind <- function(df_input, mat_tree, fx, bs_iter){
     times <- sort(unique(df_input$time))
     vars <- all.vars(fx)
@@ -239,6 +249,8 @@ ibs_2y <- get_metrics_ibs(df, mat_trad_all_new, fx_trad_all, bs_iter = bs_iter, 
 ibs_5y <- get_metrics_ibs(df, mat_trad_all_new, fx_trad_all, bs_iter = bs_iter, cutoff_time = 60)
 ibs_all <- get_metrics_ibs(df, mat_trad_all_new, fx_trad_all, bs_iter = bs_iter)
 all_trad <- list('cind'=cind, 'ibs_1y'=ibs_1y, 'ibs_2y'=ibs_2y, 'ibs_5y'=ibs_5y, 'ibs_all'=ibs_all)
+## save cox indi survival predictions
+mat_trad_all_cox <- get_cox_survprob(df, fx_trad_all)
 
 ############
 # EXTENDED #
@@ -291,6 +303,9 @@ ibs_2y <- get_metrics_ibs(df, mat_ext_all_new, fx_ext_all, bs_iter = bs_iter, cu
 ibs_5y <- get_metrics_ibs(df, mat_ext_all_new, fx_ext_all, bs_iter = bs_iter, cutoff_time = 60)
 ibs_all <- get_metrics_ibs(df, mat_ext_all_new, fx_ext_all, bs_iter = bs_iter)
 all_ext <- list('cind'=cind, 'ibs_1y'=ibs_1y, 'ibs_2y'=ibs_2y, 'ibs_5y'=ibs_5y, 'ibs_all'=ibs_all)
+
+## save cox indi survival predictions
+mat_ext_all_cox <- get_cox_survprob(df, fx_ext_all)
 
 ########################################
 # p53ab
@@ -353,6 +368,9 @@ ibs_all <- get_metrics_ibs(df, mat_trad_p53ab_new, fx_trad, bs_iter = bs_iter)
 p53ab_trad <- list('cind'=cind, 'ibs_1y'=ibs_1y, 'ibs_2y'=ibs_2y, 'ibs_5y'=ibs_5y, 'ibs_all'=ibs_all)
 # load(file = "~/Documents/fimm_files/survival_all/survival_loukavaara/data/individual_survival_curves_OSTmodel/old/mat_ext_p53ab_29june.Rdata") # used then
 
+## save cox indi survival predictions
+mat_trad_p53ab_cox <- get_cox_survprob(df, fx_trad)
+
 # lets look at the p53ab with CPH using FSII
 summary(coxph(fx_ext, data = df[, all.vars(fx_ext)], x = T, y = T))
 
@@ -408,6 +426,9 @@ ibs_5y <- get_metrics_ibs(df, mat_ext_p53ab_new, fx_ext, bs_iter = bs_iter, cuto
 ibs_all <- get_metrics_ibs(df, mat_ext_p53ab_new, fx_ext, bs_iter = bs_iter)
 p53ab_ext <- list('cind'=cind, 'ibs_1y'=ibs_1y, 'ibs_2y'=ibs_2y, 'ibs_5y'=ibs_5y, 'ibs_all'=ibs_all)
 # load(file = "~/Documents/fimm_files/survival_all/survival_loukavaara/data/individual_survival_curves_OSTmodel/old/mat_ext_p53ab_29june.Rdata") # used then
+
+## save cox indi survival predictions
+mat_ext_p53ab_cox <- get_cox_survprob(df, fx_ext)
 
 ########################################
 # NSMP
@@ -469,6 +490,9 @@ ibs_all <- get_metrics_ibs(df, mat_trad_nsmp_new, fx_trad, bs_iter = bs_iter)
 nsmp_trad <- list('cind'=cind, 'ibs_1y'=ibs_1y, 'ibs_2y'=ibs_2y, 'ibs_5y'=ibs_5y, 'ibs_all'=ibs_all)
 # load(file = "~/Documents/fimm_files/survival_all/survival_loukavaara/data/individual_survival_curves_OSTmodel/old/mat_ext_p53ab_29june.Rdata") # used then
 
+## save cox indi survival predictions
+mat_trad_nsmp_cox <- get_cox_survprob(df, fx_trad)
+
 ############
 # EXTENDED #
 ############
@@ -519,6 +543,8 @@ ibs_5y <- get_metrics_ibs(df, mat_ext_nsmp_new, fx_ext, bs_iter = bs_iter, cutof
 ibs_all <- get_metrics_ibs(df, mat_ext_nsmp_new, fx_ext, bs_iter = bs_iter)
 nsmp_ext <- list('cind'=cind, 'ibs_1y'=ibs_1y, 'ibs_2y'=ibs_2y, 'ibs_5y'=ibs_5y, 'ibs_all'=ibs_all)
 # load(file = "~/Documents/fimm_files/survival_all/survival_loukavaara/data/individual_survival_curves_OSTmodel/old/mat_ext_p53ab_29june.Rdata") # used then
+
+mat_ext_nsmp_cox <- get_cox_survprob(df, fx_ext)
 
 ########################################
 # MMRd
@@ -580,6 +606,9 @@ ibs_all <- get_metrics_ibs(df, mat_trad_mmrd_new, fx_trad, bs_iter = bs_iter)
 mmrd_trad <- list('cind'=cind, 'ibs_1y'=ibs_1y, 'ibs_2y'=ibs_2y, 'ibs_5y'=ibs_5y, 'ibs_all'=ibs_all)
 # load(file = "~/Documents/fimm_files/survival_all/survival_loukavaara/data/individual_survival_curves_OSTmodel/old/mat_ext_p53ab_29june.Rdata") # used then
 
+mat_trad_mmrd_cox <- get_cox_survprob(df, fx_trad)
+
+
 ############
 # EXTENDED #
 ############
@@ -630,6 +659,9 @@ ibs_all <- get_metrics_ibs(df, mat_ext_mmrd_new, fx_ext, bs_iter = bs_iter)
 mmrd_ext <- list('cind'=cind, 'ibs_1y'=ibs_1y, 'ibs_2y'=ibs_2y, 'ibs_5y'=ibs_5y, 'ibs_all'=ibs_all)
 # load(file = "~/Documents/fimm_files/survival_all/survival_loukavaara/data/individual_survival_curves_OSTmodel/old/mat_ext_p53ab_29june.Rdata") # used then
 
+mat_ext_mmrd_cox <- get_cox_survprob(df, fx_ext)
+
+
 # save bs results 
 holder <- list('all_trad'=all_trad,
                'all_ext'=all_ext,
@@ -667,9 +699,35 @@ MASS::write.matrix(mat_ext_all_new,
                    file = "individual_survival_curves_OSTmodel/all_ext.csv",
                    sep = ',')
 
+MASS::write.matrix(mat_trad_p53ab_cox, 
+                   file = "individual_survival_curves_OSTmodel/p53ab_trad_cox.csv",
+                   sep = ',')
+MASS::write.matrix(mat_ext_p53ab_cox, 
+                   file = "individual_survival_curves_OSTmodel/p53ab_ext_cox.csv",
+                   sep = ',')
+MASS::write.matrix(mat_trad_nsmp_cox, 
+                   file = "individual_survival_curves_OSTmodel/nsmp_trad_cox.csv",
+                   sep = ',')
+MASS::write.matrix(mat_ext_nsmp_cox, 
+                   file = "individual_survival_curves_OSTmodel/nsmp_ext_cox.csv",
+                   sep = ',')
+MASS::write.matrix(mat_trad_mmrd_cox, 
+                   file = "individual_survival_curves_OSTmodel/mmrd_trad_cox.csv",
+                   sep = ',')
+MASS::write.matrix(mat_ext_mmrd_cox, 
+                   file = "individual_survival_curves_OSTmodel/mmrd_ext_cox.csv",
+                   sep = ',')
+MASS::write.matrix(mat_trad_all_cox, 
+                   file = "individual_survival_curves_OSTmodel/all_trad_cox.csv",
+                   sep = ',')
+MASS::write.matrix(mat_ext_all_cox, 
+                   file = "individual_survival_curves_OSTmodel/all_ext_cox.csv",
+                   sep = ',')
+
 # get tree
 ## make fig 3
 iai::write_dot('output/fig3_p53_ext.dot', best_learner_ext_p53ab)
+
 # afterwards change dot file manually by adding fontsize=20 into node/edge properties. Also add two spaces after every "expected survival: xx.xx"
 # then render as svg with graphviz dot -Tfile.dot -o file.svg
 # then use inkscape to modify text if necessary. 
