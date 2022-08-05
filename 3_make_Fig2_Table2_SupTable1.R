@@ -148,7 +148,7 @@ temp[str_detect(temp$type, 'cox'), ] %>%
     group_by(row.names) %>%
     summarize(mean_diff = mean(diff_perc)) # cox improves ini % by ibs_1y 5.65, ibs_2y 7.5 , ibs_5y 3.85, ibs_all 4.4 
 
-write.csv(temp, file = "tables/ibs_change_FSIvsFSII.csv")
+write.csv(temp, file = "tables/suptable 1 ibs_change_FSIvsFSII.csv")
 
 ## cindex
 temp <- rbind(df_cind[df_cind$type=='cox_trad', c('type','row.names','means', 'upper','lower')], 
@@ -178,7 +178,7 @@ cind_change_all$diff_TREEbetterCOX <- c(
 )
 
 
-write.csv(cind_change_all, file = "tables/cind_change.csv")
+write.csv(cind_change_all, file = "tables/table 2 cind_change.csv")
 
 
 
