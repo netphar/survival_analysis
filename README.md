@@ -1,5 +1,5 @@
 # survival_analysis
-code for Zagidullin et al 2022 (Interpretable prognostic modeling of endometrial cancer). 
+code for Zagidullin et al 2022 [Interpretable prognostic modeling of endometrial cancer](https://doi.org/10.1038/s41598-022-26134-w). 
 
 Scripts to reproduce the analysis and generate figs/tables should be run sequentually. Please contact the authors if input patient data is needed. 
 
